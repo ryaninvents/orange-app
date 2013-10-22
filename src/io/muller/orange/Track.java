@@ -1,7 +1,6 @@
 package io.muller.orange;
 
-import io.muller.orange.Track.Mode;
-
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -16,6 +15,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Xml;
 
 public class Track implements LocationListener{
@@ -147,16 +147,23 @@ public class Track implements LocationListener{
 		s.endTag("","trkseg");
 		s.endTag("","trk");
 		s.endTag("","gpx");
+		s.endDocument();
 		return writer.toString();
 	}
 	
 	public void writeToXml(Activity a) throws IllegalArgumentException, IllegalStateException, IOException{
-		String FILENAME = "activity_"+System.currentTimeMillis()+".xml";
+		if(pts.size()==0) return;
+		
 		String string = toGPX();
 
-		FileOutputStream fos = a.openFileOutput(FILENAME, Context.MODE_PRIVATE);
-		fos.write(string.getBytes());
-		fos.close();
+		if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+		    File dir = Environment.getExternalStorageDirectory();
+//		    dir = new File(dir.getAbsolutePath()+"/orange");
+		    File xml = new File(dir, "activity_"+System.currentTimeMillis()+".gpx");
+		    FileOutputStream fos = new FileOutputStream(xml);
+			fos.write(string.getBytes());
+			fos.close();
+		}
 	}
 
 	@Override

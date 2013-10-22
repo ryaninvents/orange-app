@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements TrackUpdateListener, TrackStatusListener{
 	private LocationManager locationManager;
@@ -21,6 +22,7 @@ public class MainActivity extends Activity implements TrackUpdateListener, Track
 	private TextView distView;
 	private TextView statusView;
 	private Button startButton;
+	private Button saveButton;
 	private int updateInterval = 3000;
 
 	private Track track;
@@ -38,6 +40,7 @@ public class MainActivity extends Activity implements TrackUpdateListener, Track
 		timeView = (TextView) findViewById(R.id.time_view);
 		distView = (TextView) findViewById(R.id.distance);
 		startButton = (Button) findViewById(R.id.start_btn);
+		saveButton = (Button) findViewById(R.id.save_btn);
 		statusView = (TextView) findViewById(R.id.status);
 		startButton.setOnClickListener(new OnClickListener(){
 			@Override
@@ -49,10 +52,25 @@ public class MainActivity extends Activity implements TrackUpdateListener, Track
 				}
 			}
 		});
+		saveButton.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+				saveTrack();
+			}
+		});
 	}
 	
 	public Track.Mode getMode(){
 		return track.getMode();
+	}
+	
+	protected void saveTrack(){
+		try {
+			track.writeToXml(this);
+			Toast.makeText(getApplicationContext(), "Trace saved", Toast.LENGTH_SHORT).show();
+		} catch (Exception e) {
+			Toast.makeText(getApplicationContext(), "Could not save", Toast.LENGTH_LONG).show();
+			e.printStackTrace();
+		}
 	}
 	
 	private void initGPS() {
@@ -91,11 +109,13 @@ public class MainActivity extends Activity implements TrackUpdateListener, Track
     }
 	
 	protected void start(){
+		Toast.makeText(getApplicationContext(), "Trace started", Toast.LENGTH_SHORT).show();
 		track.start();
 		
 	}
 	
 	protected void pause(){
+		Toast.makeText(getApplicationContext(), "Trace paused", Toast.LENGTH_SHORT).show();
 		track.pause();
 	}
 
