@@ -16,6 +16,18 @@ public class TrkPt {
 		this.location = location;
 	}
 	
+	public double getLatitude(){
+		return location.getLatitude();
+	}
+	
+	public double getLongitude(){
+		return location.getLongitude();
+	}
+	
+	public double getElevation(){
+		return location.getAltitude();
+	}
+	
 	public double distanceTo(TrkPt that){
 		return this.location.distanceTo(that.location);
 	}
