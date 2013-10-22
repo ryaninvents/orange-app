@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Orange</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="accurate_to_within">Location accurate to within </string>
+    <string name="feet"> feet</string>
+    <string name="finding_location">Finding location...</string>
+
+</resources>
