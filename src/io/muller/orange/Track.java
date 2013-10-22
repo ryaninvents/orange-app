@@ -1,6 +1,7 @@
 package io.muller.orange;
 
-import java.io.FileNotFoundException;
+import io.muller.orange.Track.Mode;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -13,6 +14,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Xml;
 
@@ -21,13 +23,29 @@ public class Track implements LocationListener{
 	private TrkPt lastPt = null;
 	private long duration = 0;
 	private long started = 0;
+	private LocationManager locationManager;
+	private int updateInterval = 3000;
+	
+	private ArrayList<TrackUpdateListener> pointListeners = new ArrayList<TrackUpdateListener>();
+	private ArrayList<TrackStatusListener> statusListeners = new ArrayList<TrackStatusListener>();
 	
 	private Mode mode;
 	
 	public enum Mode {STOPPED, RUNNING, PAUSED};
 	
-	public Track(){
+	public Track(LocationManager locationManager){
 		pts = new ArrayList<TrkPt>();
+		this.locationManager = locationManager;
+		this.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, updateInterval, 0, this);
+		
+	}
+	
+	public void addTrackUpdateListener(TrackUpdateListener listener){
+		pointListeners.add(listener);
+	}
+	
+	public void addTrackStatusListener(TrackStatusListener listener){
+		statusListeners.add(listener);
 	}
 	
 	public void addPt(TrkPt pt){
@@ -42,7 +60,11 @@ public class Track implements LocationListener{
 		}
 		lastPt = pt;
 		pt.setDistance(distance);
+		pt.setDuration(getDuration());
 		pts.add(pt);
+		for(TrackUpdateListener l:pointListeners){
+			l.trackUpdated(pt);
+		}
 	}
 	
 	public double getDistance(){
@@ -63,6 +85,7 @@ public class Track implements LocationListener{
 		}
 		started = System.currentTimeMillis();
 		mode = Mode.RUNNING;
+		notifyStatusListeners();
 	}
 	
 	public void pause(){
@@ -71,6 +94,7 @@ public class Track implements LocationListener{
 		}
 		duration = System.currentTimeMillis() - started;
 		mode = Mode.PAUSED;
+		notifyStatusListeners();
 	}
 	
 	public void stop(){
@@ -79,6 +103,13 @@ public class Track implements LocationListener{
 		}
 		duration = System.currentTimeMillis() - started;
 		mode = Mode.STOPPED;
+		notifyStatusListeners();
+	}
+	
+	private void notifyStatusListeners(){
+		for(TrackStatusListener l:statusListeners){
+			l.statusChanged(mode);
+		}
 	}
 	
 	public String toGPX() throws IllegalArgumentException, IllegalStateException, IOException{
@@ -149,5 +180,9 @@ public class Track implements LocationListener{
 	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public Mode getMode() {
+		return mode;
 	}
 }

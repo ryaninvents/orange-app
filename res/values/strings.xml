@@ -6,6 +6,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="accurate_to_within">Location accurate to within </string>
     <string name="feet"> feet</string>
-    <string name="finding_location">Finding location...</string>
+    <string name="finding_location">Finding location…</string>
+    <string name="stopped">Stopped</string>
 
 </resources>

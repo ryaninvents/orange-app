@@ -46,13 +46,31 @@
         android:layout_alignParentRight="true"
         android:text="Save" />
 
-    <Button
-        android:id="@+id/start_btn"
+    <TextView
+        android:id="@+id/distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/time_view"
         android:layout_centerHorizontal="true"
+        android:text="0.0 mi"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Button
+        android:id="@+id/start_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/distance"
+        android:layout_centerHorizontal="true"
         android:text="Start"
         android:textSize="48sp" />
+
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/accuracy_view"
+        android:layout_alignTop="@+id/settings_btn"
+        android:text="@string/stopped"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

@@ -10,6 +10,7 @@ public class TrkPt {
 	private String currentSong;
 	private Track.Mode mode;
 	private double distance;
+	private double duration;
 	
 	public TrkPt(long timestamp, Location location){
 		this.timestamp = timestamp;
@@ -82,5 +83,13 @@ public class TrkPt {
 
 	public void setDistance(double distance) {
 		this.distance = distance;
+	}
+
+	public double getDuration() {
+		return duration;
+	}
+
+	public void setDuration(double duration) {
+		this.duration = duration;
 	}
 }
