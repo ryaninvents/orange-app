@@ -4,9 +4,18 @@
     <string name="app_name">Orange</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="accurate_to_within">Location accurate to within </string>
+    <string name="accurate_to_within">Accurate to within </string>
     <string name="feet"> feet</string>
     <string name="finding_location">Finding location…</string>
+    <string name="no_time">0.00</string>
+    <string name="no_dist">0.00 mi</string>
     <string name="stopped">Stopped</string>
+    <string name="running">Running</string>
+    <string name="paused">Paused</string>
+    <string name="start">Start</string>
+    <string name="pause">Pause</string>
+    <string name="settings">Settings</string>
+    <string name="save">Save</string>
+    
 
 </resources>

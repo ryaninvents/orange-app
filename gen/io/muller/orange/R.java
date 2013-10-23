@@ -46,7 +46,15 @@ public final class R {
         public static final int feet=0x7f050004;
         public static final int finding_location=0x7f050005;
         public static final int hello_world=0x7f050002;
-        public static final int stopped=0x7f050006;
+        public static final int no_dist=0x7f050007;
+        public static final int no_time=0x7f050006;
+        public static final int pause=0x7f05000c;
+        public static final int paused=0x7f05000a;
+        public static final int running=0x7f050009;
+        public static final int save=0x7f05000e;
+        public static final int settings=0x7f05000d;
+        public static final int start=0x7f05000b;
+        public static final int stopped=0x7f050008;
     }
     public static final class style {
         /** 

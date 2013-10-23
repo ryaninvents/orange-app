@@ -10,7 +10,6 @@ import java.util.Date;
 import org.xmlpull.v1.XmlSerializer;
 
 import android.app.Activity;
-import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -71,7 +70,7 @@ public class Track implements LocationListener{
 		return lastPt.getDistance();
 	}
 	
-	public double getDuration(){
+	public long getDuration(){
 		if(mode == Mode.RUNNING){
 			return duration + System.currentTimeMillis() - started;
 		}else{
@@ -92,7 +91,7 @@ public class Track implements LocationListener{
 		if(mode == Mode.PAUSED || mode == Mode.STOPPED){
 			throw new RuntimeException("Track not running but was paused");
 		}
-		duration = System.currentTimeMillis() - started;
+		duration += System.currentTimeMillis() - started;
 		mode = Mode.PAUSED;
 		notifyStatusListeners();
 	}
@@ -151,7 +150,7 @@ public class Track implements LocationListener{
 		return writer.toString();
 	}
 	
-	public void writeToXml(Activity a) throws IllegalArgumentException, IllegalStateException, IOException{
+	public void writeToXml(Activity a, String filename) throws IllegalArgumentException, IllegalStateException, IOException{
 		if(pts.size()==0) return;
 		
 		String string = toGPX();
@@ -159,7 +158,7 @@ public class Track implements LocationListener{
 		if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
 		    File dir = Environment.getExternalStorageDirectory();
 //		    dir = new File(dir.getAbsolutePath()+"/orange");
-		    File xml = new File(dir, "activity_"+System.currentTimeMillis()+".gpx");
+		    File xml = new File(dir, filename+".gpx");
 		    FileOutputStream fos = new FileOutputStream(xml);
 			fos.write(string.getBytes());
 			fos.close();
