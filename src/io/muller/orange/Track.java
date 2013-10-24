@@ -47,6 +47,10 @@ public class Track implements LocationListener{
 		statusListeners.add(listener);
 	}
 	
+	public void destroy(){
+		locationManager.removeUpdates(this);
+	}
+	
 	public void addPt(TrkPt pt){
 		pt.setMode(mode);
 		double distance = 0;
@@ -176,22 +180,13 @@ public class Track implements LocationListener{
 	}
 
 	@Override
-	public void onProviderDisabled(String arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onProviderDisabled(String arg0) {}
 
 	@Override
-	public void onProviderEnabled(String arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onProviderEnabled(String arg0) {}
 
 	@Override
-	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {}
 
 	public Mode getMode() {
 		return mode;

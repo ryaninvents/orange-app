@@ -65,6 +65,12 @@ public class OrangeApp extends Application {
 		startGPS();
 	}
 	
+	public Track createNewTrack(){
+		track.destroy();
+		track = new Track(locationManager);
+		return track;
+	}
+	
 	private void notifyLocationUpdateListeners(Location location){
 		for(LocationUpdateListener l:locationListeners){
 			l.locationUpdated(location);

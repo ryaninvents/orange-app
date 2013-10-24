@@ -78,7 +78,7 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 
 	protected void saveTrack() {
 		try {
-			final MainActivity a = this;
+			final MainActivity _this = this;
 			AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
 			alert.setTitle("Select filename");
@@ -95,10 +95,14 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 							String value = input.getText().toString();
 
 							try {
-								getTrack().writeToXml(a, value);
+								getTrack().writeToXml(_this, value);
 
 								Toast.makeText(getApplicationContext(), "Trace saved as "+value+".gpx",
 										Toast.LENGTH_SHORT).show();
+								Track trk = app.createNewTrack();
+
+								trk.addTrackStatusListener(_this);
+								trk.addTrackUpdateListener(_this);
 							} catch (Exception e) {
 								Toast.makeText(getApplicationContext(), "Could not save--"+e.getMessage(),
 										Toast.LENGTH_LONG).show();
