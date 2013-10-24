@@ -28,7 +28,7 @@ public class Track implements LocationListener{
 	private ArrayList<TrackUpdateListener> pointListeners = new ArrayList<TrackUpdateListener>();
 	private ArrayList<TrackStatusListener> statusListeners = new ArrayList<TrackStatusListener>();
 	
-	private Mode mode;
+	private Mode mode = Mode.STOPPED;
 	
 	public enum Mode {STOPPED, RUNNING, PAUSED};
 	
@@ -109,6 +109,11 @@ public class Track implements LocationListener{
 		for(TrackStatusListener l:statusListeners){
 			l.statusChanged(mode);
 		}
+	}
+	
+	public TrkPt getLastPoint(){
+		if(pts.size()==0) return null;
+		return pts.get(pts.size()-1);
 	}
 	
 	public String toGPX() throws IllegalArgumentException, IllegalStateException, IOException{

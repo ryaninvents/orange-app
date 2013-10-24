@@ -1,15 +1,10 @@
 package io.muller.orange;
 
-import java.io.IOException;
-
 import io.muller.orange.Track.Mode;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -21,27 +16,29 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements TrackUpdateListener,
-		TrackStatusListener {
-	private LocationManager locationManager;
-	private LocationListener locationListener;
+		TrackStatusListener, LocationUpdateListener {
+	
+	
 	private TextView accuracyView;
 	private TextView timeView;
 	private TextView distView;
 	private TextView statusView;
 	private Button startButton;
 	private Button saveButton;
-	private int updateInterval = 3000;
 	private int clockUpdateInterval = 100;
-
-	private Track track;
+	private OrangeApp app;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		initGPS();
+		app = (OrangeApp) getApplicationContext();
+		app.addLocationUpdateListener(this);
+		
 		initUI();
 		initTimer();
+		getTrack().addTrackStatusListener(this);
+		getTrack().addTrackUpdateListener(this);
 	}
 
 	private void initUI() {
@@ -51,6 +48,9 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 		startButton = (Button) findViewById(R.id.start_btn);
 		saveButton = (Button) findViewById(R.id.save_btn);
 		statusView = (TextView) findViewById(R.id.status);
+		statusChanged(getMode());
+		trackUpdated(getTrack().getLastPoint());
+		updateTimer();
 		startButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
@@ -67,9 +67,13 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 			}
 		});
 	}
+	
+	protected Track getTrack(){
+		return app.getTrack();
+	}
 
 	public Track.Mode getMode() {
-		return track.getMode();
+		return getTrack().getMode();
 	}
 
 	protected void saveTrack() {
@@ -78,7 +82,7 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 			AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
 			alert.setTitle("Select filename");
-			alert.setMessage("Filename:");
+			alert.setMessage("");
 
 			// Set an EditText view to get user input
 			final EditText input = new EditText(this);
@@ -91,7 +95,7 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 							String value = input.getText().toString();
 
 							try {
-								track.writeToXml(a, value);
+								getTrack().writeToXml(a, value);
 
 								Toast.makeText(getApplicationContext(), "Trace saved as "+value+".gpx",
 										Toast.LENGTH_SHORT).show();
@@ -120,51 +124,13 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 		}
 	}
 
-	private void initGPS() {
-
-		// Acquire a reference to the system Location Manager
-		locationManager = (LocationManager) this
-				.getSystemService(Context.LOCATION_SERVICE);
-
-		// Define a listener that responds to location updates
-		locationListener = new LocationListener() {
-			public void onLocationChanged(Location location) {
-				// Called when a new location is found by the network location
-				// provider.
-				locationUpdated(location);
-			}
-
-			public void onStatusChanged(String provider, int status,
-					Bundle extras) {
-			}
-
-			public void onProviderEnabled(String provider) {
-			}
-
-			public void onProviderDisabled(String provider) {
-			}
-		};
-
-		track = new Track(locationManager);
-		track.addTrackStatusListener(this);
-		track.addTrackUpdateListener(this);
-		startGPS();
-	}
-
-	private void startGPS() {
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-				updateInterval, 0, locationListener);
-	}
-
 	protected void start() {
-		startButton.setText(getString(R.string.pause));
-		track.start();
+		getTrack().start();
 
 	}
 
 	protected void pause() {
-		startButton.setText(getString(R.string.start));
-		track.pause();
+		getTrack().pause();
 	}
 
 	public void locationUpdated(Location loc) {
@@ -214,11 +180,12 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 	}
 
 	protected void updateTimer() {
-		timeView.setText(toTimeString((long) track.getDuration()));
+		timeView.setText(toTimeString((long) getTrack().getDuration()));
 	}
 
 	@Override
 	public void trackUpdated(TrkPt pt) {
+		if(pt==null) return;
 		double distance = pt.getDistance() / 1609;
 		// distance = Math.round(distance*100)/100;
 		timeView.setText(toTimeString((long) pt.getDuration()));
@@ -231,12 +198,15 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 		switch (mode) {
 		case RUNNING:
 			status = getString(R.string.running);
+			startButton.setText(getString(R.string.pause));
 			break;
 		case PAUSED:
 			status = getString(R.string.paused);
+			startButton.setText(getString(R.string.start));
 			break;
 		case STOPPED:
 			status = getString(R.string.stopped);
+			startButton.setText(getString(R.string.start));
 			break;
 		default:
 			status = "Error";
