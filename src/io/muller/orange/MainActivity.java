@@ -48,9 +48,24 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 		startButton = (Button) findViewById(R.id.start_btn);
 		saveButton = (Button) findViewById(R.id.save_btn);
 		statusView = (TextView) findViewById(R.id.status);
+		Button settingsButton = (Button) findViewById(R.id.settings_btn);
+
+		accuracyView.setTypeface(app.getFont(OrangeApp.Font.OSWALD_LIGHT));
+		timeView.setTypeface(app.getFont(OrangeApp.Font.DIGITAL));
+		distView.setTypeface(app.getFont(OrangeApp.Font.OSWALD_LIGHT));
+		statusView.setTypeface(app.getFont(OrangeApp.Font.OSWALD_LIGHT));
+		saveButton.setTypeface(app.getFont(OrangeApp.Font.OSWALD_LIGHT));
+
+		startButton.setTypeface(app.getFont(OrangeApp.Font.OSWALD_REGULAR));
+		if(settingsButton != null){
+			settingsButton.setTypeface(app.getFont(OrangeApp.Font.OSWALD_REGULAR));
+		}
+	
 		statusChanged(getMode());
 		trackUpdated(getTrack().getLastPoint());
 		updateTimer();
+		
+		
 		startButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
@@ -163,9 +178,9 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 		dur /= 60;
 		int hours = (int) dur;
 		if (hours > 0) {
-			return hours + ":" + pad(mins) + ":" + pad(secs) + "." + millis;
+			return hours + ":" + pad(mins) + ":" + pad(secs);// + "." + millis;
 		} else if (mins > 0) {
-			return mins + ":" + pad(secs) + "." + millis;
+			return mins + ":" + pad(secs);// + "." + millis;
 		} else {
 			return secs + "." + millis;
 		}

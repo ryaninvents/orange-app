@@ -17,16 +17,6 @@
         android:text="@string/finding_location"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <TextView
-        android:id="@+id/time_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/no_time"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="96sp" />
-
     <Button
         android:id="@+id/settings_btn"
         style="?android:attr/buttonStyleSmall"
@@ -47,24 +37,6 @@
         android:text="@string/save" />
 
     <TextView
-        android:id="@+id/distance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/time_view"
-        android:layout_centerHorizontal="true"
-        android:text="@string/no_dist"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <Button
-        android:id="@+id/start_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/distance"
-        android:layout_centerHorizontal="true"
-        android:text="@string/start"
-        android:textSize="48sp" />
-
-    <TextView
         android:id="@+id/status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -72,5 +44,34 @@
         android:layout_alignTop="@+id/settings_btn"
         android:text="@string/stopped"
         android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/time_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/save_btn"
+        android:text="@string/no_time"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="96sp" />
+
+    <TextView
+        android:id="@+id/distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/time_view"
+        android:layout_below="@+id/time_view"
+        android:text="@string/no_dist"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Button
+        android:id="@+id/start_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/distance"
+        android:layout_below="@+id/distance"
+        android:layout_marginTop="11dp"
+        android:text="@string/start"
+        android:textSize="48sp" />
 
 </RelativeLayout>
