@@ -23,7 +23,6 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 	private TextView timeView;
 	private TextView distView;
 	private TextView locationIcon;
-	private TextView statusView;
 	private Button startButton;
 	private Button saveButton;
 	private int clockUpdateInterval = 100;
@@ -48,13 +47,12 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 		distView = (TextView) findViewById(R.id.distance);
 		startButton = (Button) findViewById(R.id.start_btn);
 		saveButton = (Button) findViewById(R.id.save_btn);
-		statusView = (TextView) findViewById(R.id.status);
 		Button settingsButton = (Button) findViewById(R.id.settings_btn);
 
 		accuracyView.setTypeface(app.getFont(OrangeApp.Font.OSWALD_REGULAR));
 		timeView.setTypeface(app.getFont(OrangeApp.Font.DIGITAL));
-		distView.setTypeface(app.getFont(OrangeApp.Font.OSWALD_REGULAR));
-		statusView.setTypeface(app.getFont(OrangeApp.Font.OSWALD_REGULAR));
+		distView.setTypeface(app.getFont(OrangeApp.Font.DIGITAL));
+		
 		saveButton.setTypeface(app.getFont(OrangeApp.Font.ICONS));
 
 		startButton.setTypeface(app.getFont(OrangeApp.Font.ICONS));
@@ -65,6 +63,8 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 		
 		
 		((TextView) findViewById(R.id.miles_label)).setTypeface(app.getFont(OrangeApp.Font.OSWALD_REGULAR));
+		((TextView) findViewById(R.id.pace_label)).setTypeface(app.getFont(OrangeApp.Font.OSWALD_REGULAR));
+		((TextView) findViewById(R.id.pace)).setTypeface(app.getFont(OrangeApp.Font.OSWALD_REGULAR));
 		((TextView) findViewById(R.id.road_icon)).setTypeface(app.getFont(OrangeApp.Font.ICONS));
 		((TextView) findViewById(R.id.clock_icon)).setTypeface(app.getFont(OrangeApp.Font.ICONS));
 		locationIcon.setTypeface(app.getFont(OrangeApp.Font.ICONS));
@@ -222,24 +222,18 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 
 	@Override
 	public void statusChanged(Mode mode) {
-		String status;
 		switch (mode) {
 		case RUNNING:
-			status = getString(R.string.running);
 			startButton.setText(getString(R.string.icon_pause));
+			startButton.setBackgroundResource(R.drawable.orange_button);
 			break;
 		case PAUSED:
-			status = getString(R.string.paused);
-			startButton.setText(getString(R.string.icon_play));
-			break;
 		case STOPPED:
-			status = getString(R.string.stopped);
 			startButton.setText(getString(R.string.icon_play));
+			startButton.setBackgroundResource(R.drawable.green_button);
 			break;
-		default:
-			status = "Error";
 		}
-		statusView.setText(status);
+		
 	}
 
 }

@@ -9,16 +9,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <TextView
-        android:id="@+id/status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:text="@string/stopped"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
     <LinearLayout
+        android:id="@+id/done_and_settings_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/start_btn"
@@ -46,67 +38,7 @@
             android:text="@string/icon_cogs"
             android:textColor="@color/white"
             android:textSize="32sp" />
-
     </LinearLayout>
-
-    <TableLayout
-        android:id="@+id/tableLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/time_view"
-        android:layout_alignParentRight="true" >
-
-        <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/road_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/icon_road"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/gray" />
-
-            <TextView
-                android:id="@+id/miles_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:gravity="right"
-                android:text="@string/miles"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <TextView
-                android:id="@+id/distance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:gravity="right"
-                android:text="@string/no_dist"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </TableRow>
-    </TableLayout>
 
     <TextView
         android:id="@+id/time_view"
@@ -118,30 +50,45 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="96sp" />
 
+    <TextView
+        android:id="@+id/clock_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/time_view"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/time_view"
+        android:layout_toLeftOf="@+id/time_view"
+        android:gravity="left|center_vertical"
+        android:text="@string/icon_clock"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/gray"
+        android:textSize="48sp" />
+
     <Button
         android:id="@+id/start_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tableLayout1"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/tableLayout1"
+        android:layout_below="@+id/pace"
+        android:layout_marginTop="32dp"
         android:background="@drawable/green_button"
         android:text="@string/icon_play"
         android:textColor="@color/white"
         android:textSize="48sp" />
 
     <TextView
-        android:id="@+id/clock_icon"
+        android:id="@+id/road_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/time_view"
-        android:layout_alignLeft="@+id/tableLayout1"
-        android:layout_alignTop="@+id/time_view"
+        android:layout_alignBottom="@+id/pace_label"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/clock_icon"
         android:gravity="left|center_vertical"
-        android:text="@string/icon_clock"
+        android:text="@string/icon_road"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/gray"
-        android:textSize="32sp" />
+        android:textSize="40sp" />
 
     <TextView
         android:id="@+id/location_icon"
@@ -150,7 +97,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:text="@string/icon_gps_searching"
-        android:textColor="@color/gray" />
+        android:textColor="@color/gray"
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/accuracy_view"
@@ -158,8 +106,55 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/location_icon"
         android:layout_alignBottom="@+id/location_icon"
-        android:layout_toRightOf="@+id/clock_icon"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@+id/location_icon"
         android:text="@string/finding_location"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/time_view"
+        android:gravity="right"
+        android:text="@string/no_dist"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="32sp"
+        android:width="64dp" />
+
+    <TextView
+        android:id="@+id/pace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/distance"
+        android:gravity="right"
+        android:text="@string/infinity"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="32sp"
+        android:width="64dp" />
+
+    <TextView
+        android:id="@+id/pace_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/pace"
+        android:layout_alignBottom="@+id/pace"
+        android:layout_toLeftOf="@+id/pace"
+        android:gravity="right"
+        android:text="@string/pace"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/miles_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/distance"
+        android:layout_toLeftOf="@+id/distance"
+        android:gravity="right"
+        android:text="@string/miles"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>

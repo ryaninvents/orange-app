@@ -32,28 +32,28 @@ public final class R {
         public static final int green_dn=0x7f020004;
         public static final int green_up=0x7f020005;
         public static final int ic_launcher=0x7f020006;
-        public static final int red_button=0x7f020007;
-        public static final int red_dn=0x7f020008;
-        public static final int red_up=0x7f020009;
+        public static final int orange_button=0x7f020007;
+        public static final int orange_dn=0x7f020008;
+        public static final int orange_up=0x7f020009;
+        public static final int red_button=0x7f02000a;
+        public static final int red_dn=0x7f02000b;
+        public static final int red_up=0x7f02000c;
     }
     public static final class id {
-        public static final int accuracy_view=0x7f09000f;
-        public static final int action_settings=0x7f090010;
-        public static final int clock_icon=0x7f09000d;
-        public static final int distance=0x7f090009;
-        public static final int location_icon=0x7f09000e;
-        public static final int miles_label=0x7f090008;
+        public static final int accuracy_view=0x7f09000a;
+        public static final int action_settings=0x7f09000d;
+        public static final int clock_icon=0x7f090005;
+        public static final int distance=0x7f09000b;
+        public static final int done_and_settings_buttons=0x7f090000;
+        public static final int location_icon=0x7f090009;
+        public static final int miles_label=0x7f09000c;
+        public static final int pace=0x7f090006;
+        public static final int pace_label=0x7f090008;
         public static final int road_icon=0x7f090007;
         public static final int save_btn=0x7f090002;
         public static final int settings_btn=0x7f090003;
         public static final int start_btn=0x7f090001;
-        public static final int status=0x7f090000;
-        public static final int tableLayout1=0x7f090004;
-        public static final int tableRow1=0x7f090006;
-        public static final int tableRow2=0x7f09000a;
-        public static final int tableRow3=0x7f09000b;
-        public static final int tableRow4=0x7f09000c;
-        public static final int time_view=0x7f090005;
+        public static final int time_view=0x7f090004;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -68,24 +68,26 @@ public final class R {
         public static final int feet=0x7f050004;
         public static final int finding_location=0x7f050005;
         public static final int hello_world=0x7f050002;
-        public static final int icon_clock=0x7f050014;
-        public static final int icon_cogs=0x7f050010;
-        public static final int icon_flag=0x7f050013;
-        public static final int icon_gps_locked=0x7f050017;
-        public static final int icon_gps_searching=0x7f050016;
-        public static final int icon_pause=0x7f050012;
-        public static final int icon_play=0x7f050011;
-        public static final int icon_road=0x7f050015;
+        public static final int icon_clock=0x7f050016;
+        public static final int icon_cogs=0x7f050012;
+        public static final int icon_flag=0x7f050015;
+        public static final int icon_gps_locked=0x7f050019;
+        public static final int icon_gps_searching=0x7f050018;
+        public static final int icon_pause=0x7f050014;
+        public static final int icon_play=0x7f050013;
+        public static final int icon_road=0x7f050017;
+        public static final int infinity=0x7f05000a;
         public static final int miles=0x7f050008;
         public static final int no_dist=0x7f050007;
         public static final int no_time=0x7f050006;
-        public static final int pause=0x7f05000d;
-        public static final int paused=0x7f05000b;
-        public static final int running=0x7f05000a;
-        public static final int save=0x7f05000f;
-        public static final int settings=0x7f05000e;
-        public static final int start=0x7f05000c;
-        public static final int stopped=0x7f050009;
+        public static final int pace=0x7f050009;
+        public static final int pause=0x7f05000f;
+        public static final int paused=0x7f05000d;
+        public static final int running=0x7f05000c;
+        public static final int save=0x7f050011;
+        public static final int settings=0x7f050010;
+        public static final int start=0x7f05000e;
+        public static final int stopped=0x7f05000b;
     }
     public static final class style {
         /** 
