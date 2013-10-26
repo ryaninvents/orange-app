@@ -226,11 +226,13 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 		case RUNNING:
 			startButton.setText(getString(R.string.icon_pause));
 			startButton.setBackgroundResource(R.drawable.orange_button);
+			saveButton.setVisibility(View.GONE);
 			break;
 		case PAUSED:
 		case STOPPED:
 			startButton.setText(getString(R.string.icon_play));
 			startButton.setBackgroundResource(R.drawable.green_button);
+			saveButton.setVisibility(View.VISIBLE);
 			break;
 		}
 		

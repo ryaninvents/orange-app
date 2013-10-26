@@ -27,8 +27,10 @@
     <string name="icon_road">&#xf018;</string>
     <string name="icon_gps_searching">&#xf14e;</string>
     <string name="icon_gps_locked">&#xf124;</string>
+
     <color name="white">#fff</color>
     <color name="gray">#aaa</color>
-    
+
+    <string name="title_activity_save">SaveActivity</string>
 
 </resources>
