@@ -17,9 +17,9 @@ public class OrangeApp extends Application {
 	private int updateInterval = 3000;
 	private ArrayList<LocationUpdateListener> locationListeners = new ArrayList<LocationUpdateListener>();
 	private static OrangeApp singleton;
-	private static Typeface oswaldBold, oswaldRegular, oswaldLight, digital;
+	private static Typeface oswaldBold, oswaldRegular, oswaldLight, digital, icons;
 	
-	public enum Font{OSWALD_BOLD, OSWALD_REGULAR, OSWALD_LIGHT, DIGITAL};
+	public enum Font{OSWALD_BOLD, OSWALD_REGULAR, OSWALD_LIGHT, DIGITAL, ICONS};
 
 	public OrangeApp getInstance() {
 		return singleton;
@@ -45,14 +45,16 @@ public class OrangeApp extends Application {
 		oswaldRegular = Typeface.createFromAsset(getAssets(), "Oswald-Regular.ttf");
 		oswaldLight = Typeface.createFromAsset(getAssets(), "Oswald-Light.ttf");
 		digital = Typeface.createFromAsset(getAssets(), "BebasNeue.ttf");
+		icons = Typeface.createFromAsset(getAssets(), "FontAwesome.otf");
 	}
 	
 	public Typeface getFont(Font f){
 		switch(f){
 		case OSWALD_BOLD: return oswaldBold;
 		case OSWALD_REGULAR: return oswaldRegular;
-		case OSWALD_LIGHT: return oswaldRegular;
+		case OSWALD_LIGHT: return oswaldLight;
 		case DIGITAL: return digital;
+		case ICONS: return icons;
 		}
 		return oswaldRegular;
 	}

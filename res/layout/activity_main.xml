@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -9,69 +10,156 @@
     tools:context=".MainActivity" >
 
     <TextView
-        android:id="@+id/accuracy_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:text="@string/finding_location"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <Button
-        android:id="@+id/settings_btn"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/accuracy_view"
-        android:layout_alignParentRight="true"
-        android:text="@string/settings" />
-
-    <Button
-        android:id="@+id/save_btn"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/settings_btn"
-        android:layout_alignLeft="@+id/settings_btn"
-        android:layout_alignParentRight="true"
-        android:text="@string/save" />
-
-    <TextView
         android:id="@+id/status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/accuracy_view"
-        android:layout_alignTop="@+id/settings_btn"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
         android:text="@string/stopped"
         android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/start_btn"
+        android:layout_below="@+id/start_btn"
+        android:weightSum="1" >
+
+        <Button
+            android:id="@+id/save_btn"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".8"
+            android:background="@drawable/red_button"
+            android:text="@string/icon_flag"
+            android:textColor="@color/white"
+            android:textSize="32sp" />
+
+        <Button
+            android:id="@+id/settings_btn"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".2"
+            android:background="@drawable/blue_button"
+            android:text="@string/icon_cogs"
+            android:textColor="@color/white"
+            android:textSize="32sp" />
+
+    </LinearLayout>
+
+    <TableLayout
+        android:id="@+id/tableLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/time_view"
+        android:layout_alignParentRight="true" >
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/road_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/icon_road"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/gray" />
+
+            <TextView
+                android:id="@+id/miles_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="right"
+                android:text="@string/miles"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="right"
+                android:text="@string/no_dist"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        </TableRow>
+    </TableLayout>
 
     <TextView
         android:id="@+id/time_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/save_btn"
         android:text="@string/no_time"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="96sp" />
-
-    <TextView
-        android:id="@+id/distance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/time_view"
-        android:layout_below="@+id/time_view"
-        android:text="@string/no_dist"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <Button
         android:id="@+id/start_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/distance"
-        android:layout_below="@+id/distance"
-        android:layout_marginTop="11dp"
-        android:text="@string/start"
+        android:layout_alignLeft="@+id/tableLayout1"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tableLayout1"
+        android:background="@drawable/green_button"
+        android:text="@string/icon_play"
+        android:textColor="@color/white"
         android:textSize="48sp" />
+
+    <TextView
+        android:id="@+id/clock_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/time_view"
+        android:layout_alignLeft="@+id/tableLayout1"
+        android:layout_alignTop="@+id/time_view"
+        android:gravity="left|center_vertical"
+        android:text="@string/icon_clock"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/gray"
+        android:textSize="32sp" />
+
+    <TextView
+        android:id="@+id/location_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:text="@string/icon_gps_searching"
+        android:textColor="@color/gray" />
+
+    <TextView
+        android:id="@+id/accuracy_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/location_icon"
+        android:layout_alignBottom="@+id/location_icon"
+        android:layout_toRightOf="@+id/clock_icon"
+        android:text="@string/finding_location"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

@@ -22,6 +22,7 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 	private TextView accuracyView;
 	private TextView timeView;
 	private TextView distView;
+	private TextView locationIcon;
 	private TextView statusView;
 	private Button startButton;
 	private Button saveButton;
@@ -50,16 +51,23 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 		statusView = (TextView) findViewById(R.id.status);
 		Button settingsButton = (Button) findViewById(R.id.settings_btn);
 
-		accuracyView.setTypeface(app.getFont(OrangeApp.Font.OSWALD_LIGHT));
+		accuracyView.setTypeface(app.getFont(OrangeApp.Font.OSWALD_REGULAR));
 		timeView.setTypeface(app.getFont(OrangeApp.Font.DIGITAL));
-		distView.setTypeface(app.getFont(OrangeApp.Font.OSWALD_LIGHT));
-		statusView.setTypeface(app.getFont(OrangeApp.Font.OSWALD_LIGHT));
-		saveButton.setTypeface(app.getFont(OrangeApp.Font.OSWALD_LIGHT));
+		distView.setTypeface(app.getFont(OrangeApp.Font.OSWALD_REGULAR));
+		statusView.setTypeface(app.getFont(OrangeApp.Font.OSWALD_REGULAR));
+		saveButton.setTypeface(app.getFont(OrangeApp.Font.ICONS));
 
-		startButton.setTypeface(app.getFont(OrangeApp.Font.OSWALD_REGULAR));
-		if(settingsButton != null){
-			settingsButton.setTypeface(app.getFont(OrangeApp.Font.OSWALD_REGULAR));
-		}
+		startButton.setTypeface(app.getFont(OrangeApp.Font.ICONS));
+		
+		settingsButton.setTypeface(app.getFont(OrangeApp.Font.ICONS));
+		
+		locationIcon = ((TextView)findViewById(R.id.location_icon));
+		
+		
+		((TextView) findViewById(R.id.miles_label)).setTypeface(app.getFont(OrangeApp.Font.OSWALD_REGULAR));
+		((TextView) findViewById(R.id.road_icon)).setTypeface(app.getFont(OrangeApp.Font.ICONS));
+		((TextView) findViewById(R.id.clock_icon)).setTypeface(app.getFont(OrangeApp.Font.ICONS));
+		locationIcon.setTypeface(app.getFont(OrangeApp.Font.ICONS));
 	
 		statusChanged(getMode());
 		trackUpdated(getTrack().getLastPoint());
@@ -156,6 +164,7 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 		accuracyView.setText(getString(R.string.accurate_to_within) + " "
 				+ Math.round(loc.getAccuracy() / 12 * 39) + " "
 				+ getString(R.string.feet));
+		locationIcon.setText(getString(R.string.icon_gps_locked));
 	}
 
 	@Override
@@ -208,7 +217,7 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 		double distance = pt.getDistance() / 1609;
 		// distance = Math.round(distance*100)/100;
 		timeView.setText(toTimeString((long) pt.getDuration()));
-		distView.setText(String.format("%.2f mi", distance));
+		distView.setText(String.format("%.2f", distance));
 	}
 
 	@Override
@@ -217,15 +226,15 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 		switch (mode) {
 		case RUNNING:
 			status = getString(R.string.running);
-			startButton.setText(getString(R.string.pause));
+			startButton.setText(getString(R.string.icon_pause));
 			break;
 		case PAUSED:
 			status = getString(R.string.paused);
-			startButton.setText(getString(R.string.start));
+			startButton.setText(getString(R.string.icon_play));
 			break;
 		case STOPPED:
 			status = getString(R.string.stopped);
-			startButton.setText(getString(R.string.start));
+			startButton.setText(getString(R.string.icon_play));
 			break;
 		default:
 			status = "Error";
