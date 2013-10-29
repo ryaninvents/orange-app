@@ -2,31 +2,32 @@ package io.muller.orange;
 
 import io.muller.orange.Track.Mode;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends Activity implements TrackUpdateListener,
-		TrackStatusListener, LocationUpdateListener {
+		TrackStatusListener, LocationUpdateListener, TrackCreationListener {
 	
 	
 	private TextView accuracyView;
 	private TextView timeView;
 	private TextView distView;
+	private TextView paceView;
 	private TextView locationIcon;
 	private Button startButton;
 	private Button saveButton;
 	private int clockUpdateInterval = 100;
 	private OrangeApp app;
+	private SharedPreferences prefs;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,10 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 		setContentView(R.layout.activity_main);
 		app = (OrangeApp) getApplicationContext();
 		app.addLocationUpdateListener(this);
+		app.addTrackCreationListener(this);
+		
+
+		prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		
 		initUI();
 		initTimer();
@@ -60,9 +65,15 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 		settingsButton.setTypeface(app.getFont(OrangeApp.Font.ICONS));
 		
 		locationIcon = ((TextView)findViewById(R.id.location_icon));
+		paceView = ((TextView) findViewById(R.id.pace));
 		
-		
-		((TextView) findViewById(R.id.miles_label)).setTypeface(app.getFont(OrangeApp.Font.OSWALD_REGULAR));
+		TextView miles_label = ((TextView) findViewById(R.id.miles_label));
+		miles_label.setTypeface(app.getFont(OrangeApp.Font.OSWALD_REGULAR));
+
+		boolean metric = prefs.getString("units_system", "0").equals("0");
+		if(metric){
+			miles_label.setText(R.string.kilometers);
+		}
 		((TextView) findViewById(R.id.pace_label)).setTypeface(app.getFont(OrangeApp.Font.OSWALD_REGULAR));
 		((TextView) findViewById(R.id.pace)).setTypeface(app.getFont(OrangeApp.Font.OSWALD_REGULAR));
 		((TextView) findViewById(R.id.road_icon)).setTypeface(app.getFont(OrangeApp.Font.ICONS));
@@ -86,9 +97,16 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 		});
 		saveButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				saveTrack();
+//				saveTrack();
+				saveActivity();
 			}
 		});
+		settingsButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				viewSettings();
+			}
+		});
+		
 	}
 	
 	protected Track getTrack(){
@@ -99,57 +117,6 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 		return getTrack().getMode();
 	}
 
-	protected void saveTrack() {
-		try {
-			final MainActivity _this = this;
-			AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-			alert.setTitle("Select filename");
-			alert.setMessage("");
-
-			// Set an EditText view to get user input
-			final EditText input = new EditText(this);
-			alert.setView(input);
-
-			alert.setPositiveButton("Save",
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog,
-								int whichButton) {
-							String value = input.getText().toString();
-
-							try {
-								getTrack().writeToXml(_this, value);
-
-								Toast.makeText(getApplicationContext(), "Trace saved as "+value+".gpx",
-										Toast.LENGTH_SHORT).show();
-								Track trk = app.createNewTrack();
-
-								trk.addTrackStatusListener(_this);
-								trk.addTrackUpdateListener(_this);
-							} catch (Exception e) {
-								Toast.makeText(getApplicationContext(), "Could not save--"+e.getMessage(),
-										Toast.LENGTH_LONG).show();
-								e.printStackTrace();
-							}
-						}
-					});
-
-			alert.setNegativeButton("Cancel",
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog,
-								int whichButton) {
-							Toast.makeText(getApplicationContext(), "Save cancelled",
-									Toast.LENGTH_SHORT).show();
-						}
-					});
-
-			alert.show();
-		} catch (Exception e) {
-			Toast.makeText(getApplicationContext(), "Could not save",
-					Toast.LENGTH_LONG).show();
-			e.printStackTrace();
-		}
-	}
 
 	protected void start() {
 		getTrack().start();
@@ -161,9 +128,10 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 	}
 
 	public void locationUpdated(Location loc) {
+		boolean metric = prefs.getString("units_system", "0").equals("0");
 		accuracyView.setText(getString(R.string.accurate_to_within) + " "
-				+ Math.round(loc.getAccuracy() / 12 * 39) + " "
-				+ getString(R.string.feet));
+				+ Math.round(loc.getAccuracy() * (metric?1.0:39.0/12.0)) + " "
+				+ (metric? getString(R.string.meters):getString(R.string.feet)));
 		locationIcon.setText(getString(R.string.icon_gps_locked));
 	}
 
@@ -214,10 +182,22 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 	@Override
 	public void trackUpdated(TrkPt pt) {
 		if(pt==null) return;
-		double distance = pt.getDistance() / 1609;
+		boolean metric = prefs.getString("units_system", "0").equals("0");
+		double distance = pt.getDistance() / (metric? 1000:1609);
 		// distance = Math.round(distance*100)/100;
 		timeView.setText(toTimeString((long) pt.getDuration()));
 		distView.setText(String.format("%.2f", distance));
+		if(pt.getDistance()>100){
+			// only calculate pace if we've traveled more than 100 meters
+			float pace = (float) pt.getDuration() / (float) distance;
+			if(pace<3600000){
+				paceView.setText(toTimeString((long) pace));
+				paceView.setTypeface(app.getFont(OrangeApp.Font.DIGITAL));
+			}else {
+				paceView.setText(R.string.infinity);
+				paceView.setTypeface(app.getFont(OrangeApp.Font.OSWALD_REGULAR));
+			}
+		}
 	}
 
 	@Override
@@ -236,6 +216,23 @@ public class MainActivity extends Activity implements TrackUpdateListener,
 			break;
 		}
 		
+	}
+	
+	public void saveActivity(){
+		Intent i = new Intent(getApplicationContext(), SaveActivity.class);
+		startActivity(i);
+	}
+	
+	public void viewSettings(){
+
+		Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
+		startActivity(i);
+	}
+
+	@Override
+	public void trackCreated(Track track) {
+		getTrack().addTrackStatusListener(this);
+		getTrack().addTrackUpdateListener(this);
 	}
 
 }

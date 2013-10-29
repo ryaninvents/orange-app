@@ -10,6 +10,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name="io.muller.orange.OrangeApp"
@@ -34,6 +35,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="io.muller.orange.MainActivity" />
         </activity>
+
+        <activity android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName="io.muller.orange.MainActivity"
+            android:theme="@style/SettingsTheme">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value="io.muller.orange.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
+

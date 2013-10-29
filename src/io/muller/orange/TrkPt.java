@@ -92,4 +92,8 @@ public class TrkPt {
 	public void setDuration(double duration) {
 		this.duration = duration;
 	}
+
+	public float getSigma() {
+		return location.getAccuracy();
+	}
 }

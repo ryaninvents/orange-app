@@ -7,6 +7,8 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.xmlpull.v1.XmlSerializer;
 
 import android.app.Activity;
@@ -22,8 +24,11 @@ public class Track implements LocationListener{
 	private TrkPt lastPt = null;
 	private long duration = 0;
 	private long started = 0;
+	private long timestamp = 0;
 	private LocationManager locationManager;
 	private int updateInterval = 3000;
+	private int rating = 3;
+	private String name = "";
 	
 	private ArrayList<TrackUpdateListener> pointListeners = new ArrayList<TrackUpdateListener>();
 	private ArrayList<TrackStatusListener> statusListeners = new ArrayList<TrackStatusListener>();
@@ -71,6 +76,7 @@ public class Track implements LocationListener{
 	}
 	
 	public double getDistance(){
+		if(lastPt==null) return 0;
 		return lastPt.getDistance();
 	}
 	
@@ -87,6 +93,7 @@ public class Track implements LocationListener{
 			throw new RuntimeException("Track already running but was started");
 		}
 		started = System.currentTimeMillis();
+		if(timestamp == 0) timestamp = started;
 		mode = Mode.RUNNING;
 		notifyStatusListeners();
 	}
@@ -118,6 +125,36 @@ public class Track implements LocationListener{
 	public TrkPt getLastPoint(){
 		if(pts.size()==0) return null;
 		return pts.get(pts.size()-1);
+	}
+	
+	public long getTimestamp(){
+		return timestamp;
+	}
+	
+	public String toJSON(){
+		JSONObject ob = new JSONObject();
+		try {
+			ob.put("rating", rating);
+			ob.put("activity_name",name);
+			ob.put("ts", pts.size()>0?pts.get(0).getTimestamp():0);
+			ob.put("distance", getDistance());
+			ob.put("duration", getDuration());
+			JSONArray pts = new JSONArray();
+			for(TrkPt pt:this.pts){
+				JSONObject pp = new JSONObject();
+				pp.put("ts",pt.getTimestamp());
+				pp.put("lat", pt.getLatitude());
+				pp.put("lon", pt.getLongitude());
+				pp.put("sigma", pt.getSigma());
+				pp.put("duration", pt.getDuration());
+				pp.put("distance", pt.getDistance());
+				pts.put(pp);
+			}
+			if(this.pts.size()>0) ob.put("points", pts);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return ob.toString();
 	}
 	
 	public String toGPX() throws IllegalArgumentException, IllegalStateException, IOException{
@@ -190,5 +227,13 @@ public class Track implements LocationListener{
 
 	public Mode getMode() {
 		return mode;
+	}
+
+	public void setName(String name) {
+		this.name = name; 
+	}
+	
+	public void setRating(int r){
+		rating = r;
 	}
 }

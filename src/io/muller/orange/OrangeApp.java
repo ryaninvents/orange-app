@@ -16,6 +16,7 @@ public class OrangeApp extends Application {
 	private LocationListener locationListener;
 	private int updateInterval = 3000;
 	private ArrayList<LocationUpdateListener> locationListeners = new ArrayList<LocationUpdateListener>();
+	private ArrayList<TrackCreationListener> newTrackListeners = new ArrayList<TrackCreationListener>();
 	private static OrangeApp singleton;
 	private static Typeface oswaldBold, oswaldRegular, oswaldLight, digital, icons;
 	
@@ -92,6 +93,9 @@ public class OrangeApp extends Application {
 	public Track createNewTrack() {
 		track.destroy();
 		track = new Track(locationManager);
+		for(TrackCreationListener l:newTrackListeners){
+			l.trackCreated(track);
+		}
 		return track;
 	}
 
@@ -103,6 +107,10 @@ public class OrangeApp extends Application {
 
 	public void addLocationUpdateListener(LocationUpdateListener l) {
 		locationListeners.add(l);
+	}
+	
+	public void addTrackCreationListener(TrackCreationListener l){
+		newTrackListeners.add(l);
 	}
 
 	private void startGPS() {
